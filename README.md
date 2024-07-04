@@ -37,7 +37,7 @@ git clone https://github.com/PratikTrivedi88/PratiktTrivedi.github.io.git
 
 ## Contact
 
-If you want to contact me you can reach me at [Twitter](https://www.twitter.com/codewithsadee).
+If you want to contact me you can reach me at [GitHub](https://github.com/PratikTrivedi88/PratiktTrivedi.github.io.git).
 
 ## License
 
