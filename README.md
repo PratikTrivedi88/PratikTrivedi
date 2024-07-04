@@ -1,4 +1,4 @@
-# vCard - Personal portfolio
+# Pratik Trivedi - Personal portfolio
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/codewithsadee/vcard-personal-portfolio)
 ![GitHub stars](https://img.shields.io/github/stars/codewithsadee/vcard-personal-portfolio?style=social)
@@ -21,7 +21,7 @@ Before you begin, ensure you have met the following requirements:
 
 ## Installing vCard
 
-To install **vCard**, follow these steps:
+To install **vCard Personal portfolio**, follow these steps:
 
 Linux and macOS:
 
@@ -37,7 +37,7 @@ git clone https://github.com/PratikTrivedi88/PratiktTrivedi.github.io.git
 
 ## Contact
 
-If you want to contact me you can reach me at [Twitter](https://www.twitter.com/codewithsadee).
+If you want to contact me you can reach me at [GitHub](https://github.com/PratikTrivedi88/PratiktTrivedi.github.io.git).
 
 ## License
 
