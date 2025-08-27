@@ -1,11 +1,7 @@
 'use strict';
 
-
-
 // element toggle function
 const elementToggleFunc = function (elem) { elem.classList.toggle("active"); }
-
-
 
 // sidebar variables
 const sidebar = document.querySelector("[data-sidebar]");
@@ -13,8 +9,6 @@ const sidebarBtn = document.querySelector("[data-sidebar-btn]");
 
 // sidebar toggle functionality for mobile
 sidebarBtn.addEventListener("click", function () { elementToggleFunc(sidebar); });
-
-
 
 // testimonials variables
 const testimonialsItem = document.querySelectorAll("[data-testimonials-item]");
@@ -56,62 +50,78 @@ for (let i = 0; i < testimonialsItem.length; i++) {
 
 
 // custom select variables
-const select = document.querySelector("[data-select]");
-const selectItems = document.querySelectorAll("[data-select-item]");
-const selectValue = document.querySelector("[data-selecct-value]");
-const filterBtn = document.querySelectorAll("[data-filter-btn]");
+// Generic Filter Function
+const filterFunc = (selectedValue, filterItems) => {
+    filterItems.forEach(item => {
+        const category = item.dataset.category.toLowerCase();
+        if (selectedValue === "all" || selectedValue === category) {
+            item.classList.add("active");
+        } else {
+            item.classList.remove("active");
+        }
+    });
+};
 
-select.addEventListener("click", function () { elementToggleFunc(this); });
+// Generic select and filter handler
+function setupSelectFilter({
+    selectElement,
+    selectItems,
+    selectValueElement,
+    filterButtons,
+    filterItems,
+    isDataAttr = false
+}) {
+    let lastClickedBtn = filterButtons[0];
 
-// add event in all select items
-for (let i = 0; i < selectItems.length; i++) {
-  selectItems[i].addEventListener("click", function () {
+    selectElement.addEventListener("click", () => {
+        elementToggleFunc(selectElement);
+    });
 
-    let selectedValue = this.innerText.toLowerCase();
-    selectValue.innerText = this.innerText;
-    elementToggleFunc(select);
-    filterFunc(selectedValue);
+    selectItems.forEach(item => {
+        item.addEventListener("click", () => {
+            const selectedValue = isDataAttr
+                ? item.getAttribute(item.getAttributeNames().find(attr => attr.startsWith("data-select-item")))
+                : item.innerText.toLowerCase();
 
-  });
+            selectValueElement.innerText = item.innerText;
+            elementToggleFunc(selectElement);
+            filterFunc(selectedValue, filterItems);
+        });
+    });
+
+    filterButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+            const selectedValue = isDataAttr
+                ? btn.getAttribute(btn.getAttributeNames().find(attr => attr.startsWith("data-filter-btn")))
+                : btn.innerText.toLowerCase();
+
+            selectValueElement.innerText = btn.innerText;
+            filterFunc(selectedValue, filterItems);
+            lastClickedBtn.classList.remove("active");
+            btn.classList.add("active");
+            lastClickedBtn = btn;
+        });
+    });
 }
 
-// filter variables
-const filterItems = document.querySelectorAll("[data-filter-item]");
+// Initialize for Projects
+setupSelectFilter({
+    selectElement: document.querySelector("[data-select]"),
+    selectItems: document.querySelectorAll("[data-select-item]"),
+    selectValueElement: document.querySelector("[data-select-value]"),
+    filterButtons: document.querySelectorAll("[data-filter-btn]"),
+    filterItems: document.querySelectorAll("[data-filter-item]")
+});
 
-const filterFunc = function (selectedValue) {
-
-  for (let i = 0; i < filterItems.length; i++) {
-
-    if (selectedValue === "all") {
-      filterItems[i].classList.add("active");
-    } else if (selectedValue === filterItems[i].dataset.category) {
-      filterItems[i].classList.add("active");
-    } else {
-      filterItems[i].classList.remove("active");
-    }
-
-  }
-
-}
-
-// add event in all filter button items for large screen
-let lastClickedBtn = filterBtn[0];
-
-for (let i = 0; i < filterBtn.length; i++) {
-
-  filterBtn[i].addEventListener("click", function () {
-
-    let selectedValue = this.innerText.toLowerCase();
-    selectValue.innerText = this.innerText;
-    filterFunc(selectedValue);
-
-    lastClickedBtn.classList.remove("active");
-    this.classList.add("active");
-    lastClickedBtn = this;
-
-  });
-
-}
+// Initialize for Certifications
+setupSelectFilter({
+    selectElement: document.querySelector("[data-select1]"),
+    selectItems: document.querySelectorAll("[data-select-item1]"),
+    selectValueElement: document.querySelector("[data-select-value1]"),
+    filterButtons: document.querySelectorAll("[data-filter-btn1]"),
+    filterItems: document.querySelectorAll("[data-filter-item]"),
+    isDataAttr: true
+});
 
 
 
@@ -157,3 +167,14 @@ for (let i = 0; i < navigationLinks.length; i++) {
 
   });
 }
+
+document.addEventListener("keydown", function (e) {
+    // F12 or Ctrl+Shift+I or Ctrl+Shift+J or Ctrl+U
+    if (
+        e.key === "F12" ||
+        (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J" || e.key === "C")) ||
+        (e.ctrlKey && e.key === "U")
+    ) {
+        e.preventDefault();
+    }
+});
