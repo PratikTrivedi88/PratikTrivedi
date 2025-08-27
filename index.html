@@ -1293,7 +1293,7 @@
 
           <h3 class="h3 form-title">Contact Form</h3>
 
-          <form action="#" class="form" data-form>
+          <form id="contact-form" action="#" class="form" data-form>
 
             <div class="input-wrapper">
               <input type="text" name="fullname" class="form-input" placeholder="Full name" required data-form-input>
@@ -1303,13 +1303,13 @@
 
             <textarea name="message" class="form-input" placeholder="Your Message" required data-form-input></textarea>
 
-            <button class="form-btn" type="submit" disabled data-form-btn>
+            <button class="form-btn" type="submit" data-form-btn>
               <ion-icon name="paper-plane"></ion-icon>
               <span>Send Message</span>
             </button>
 
           </form>
-
+          <p id="form-status"></p>
         </section>
 
       </article>
@@ -1333,10 +1333,30 @@
   -->
   <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("pratik.trivedi28@gmail.com"); // replace with your EmailJS User ID
+    })();
+  </script>
 </body>
 
+
+
 </html>
+<script>
+document.getElementById("contact-form").addEventListener("submit", function(event) {
+  event.preventDefault(); // prevent default form submit
+
+  emailjs.sendForm("service_ijg0uam", "template_puvgx15", this)
+    .then(function() {
+      document.getElementById("form-status").innerText = "✅ Message sent successfully!";
+    }, function(error) {
+      document.getElementById("form-status").innerText = "❌ Failed to send. Try again.";
+      console.error("EmailJS Error:", error);
+    });
+});
+</script>
 <script language="javascript">
 document.onmousedown=disableclick;
 status="Right Click Disabled";
