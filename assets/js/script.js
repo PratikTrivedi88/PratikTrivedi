@@ -23,23 +23,23 @@ const modalText = document.querySelector("[data-modal-text]");
 
 // modal toggle function
 const testimonialsModalFunc = function () {
-  modalContainer.classList.toggle("active");
-  overlay.classList.toggle("active");
+    modalContainer.classList.toggle("active");
+    overlay.classList.toggle("active");
 }
 
 // add click event to all modal items
 for (let i = 0; i < testimonialsItem.length; i++) {
 
-  testimonialsItem[i].addEventListener("click", function () {
+    testimonialsItem[i].addEventListener("click", function () {
 
-    modalImg.src = this.querySelector("[data-testimonials-avatar]").src;
-    modalImg.alt = this.querySelector("[data-testimonials-avatar]").alt;
-    modalTitle.innerHTML = this.querySelector("[data-testimonials-title]").innerHTML;
-    modalText.innerHTML = this.querySelector("[data-testimonials-text]").innerHTML;
+        modalImg.src = this.querySelector("[data-testimonials-avatar]").src;
+        modalImg.alt = this.querySelector("[data-testimonials-avatar]").alt;
+        modalTitle.innerHTML = this.querySelector("[data-testimonials-title]").innerHTML;
+        modalText.innerHTML = this.querySelector("[data-testimonials-text]").innerHTML;
 
-    testimonialsModalFunc();
+        testimonialsModalFunc();
 
-  });
+    });
 
 }
 
@@ -132,16 +132,16 @@ const formBtn = document.querySelector("[data-form-btn]");
 
 // add event to all form input field
 for (let i = 0; i < formInputs.length; i++) {
-  formInputs[i].addEventListener("input", function () {
+    formInputs[i].addEventListener("input", function () {
 
-    // check form validation
-    if (form.checkValidity()) {
-      formBtn.removeAttribute("disabled");
-    } else {
-      formBtn.setAttribute("disabled", "");
-    }
+        // check form validation
+        if (form.checkValidity()) {
+            formBtn.removeAttribute("disabled");
+        } else {
+            formBtn.setAttribute("disabled", "");
+        }
 
-  });
+    });
 }
 
 
@@ -152,20 +152,20 @@ const pages = document.querySelectorAll("[data-page]");
 
 // add event to all nav link
 for (let i = 0; i < navigationLinks.length; i++) {
-  navigationLinks[i].addEventListener("click", function () {
+    navigationLinks[i].addEventListener("click", function () {
 
-    for (let i = 0; i < pages.length; i++) {
-      if (this.innerHTML.toLowerCase() === pages[i].dataset.page) {
-        pages[i].classList.add("active");
-        navigationLinks[i].classList.add("active");
-        window.scrollTo(0, 0);
-      } else {
-        pages[i].classList.remove("active");
-        navigationLinks[i].classList.remove("active");
-      }
-    }
+        for (let i = 0; i < pages.length; i++) {
+            if (this.innerHTML.toLowerCase() === pages[i].dataset.page) {
+                pages[i].classList.add("active");
+                navigationLinks[i].classList.add("active");
+                window.scrollTo(0, 0);
+            } else {
+                pages[i].classList.remove("active");
+                navigationLinks[i].classList.remove("active");
+            }
+        }
 
-  });
+    });
 }
 
 document.addEventListener("keydown", function (e) {
@@ -178,3 +178,64 @@ document.addEventListener("keydown", function (e) {
         e.preventDefault();
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    function updateBars(category, levelMode) {
+        category.querySelectorAll(".skill-progress-fill").forEach(bar => {
+            const dataEl = bar.closest(".skills-item")?.querySelector(".title-wrapper data");
+            let width = parseInt(dataEl?.getAttribute("value")) || 0;
+
+            // Apply width
+            bar.style.width = width + "%";
+
+            // Decide level text + color
+            let levelText = "";
+            if (width <= 20) {
+                bar.style.background = "#f87171";
+                levelText = "Beginner";
+            } else if (width <= 40) {
+                bar.style.background = "#fbbf24";
+                levelText = "Intermediate";
+            } else if (width <= 60) {
+                bar.style.background = "#60a5fa";
+                levelText = "Proficient";
+            } else if (width <= 80) {
+                bar.style.background = "#a78bfa";
+                levelText = "Advanced";
+            } else {
+                bar.style.background = "#4ade80";
+                levelText = "Expert";
+            }
+
+            // Toggle behavior
+            if (levelMode) {
+                bar.textContent = levelText;
+                if (dataEl) dataEl.style.display = "none";
+            } else {
+                bar.textContent = "";
+                if (dataEl) dataEl.style.display = "inline";
+            }
+        });
+    }
+
+    // Loop over each skill section
+    document.querySelectorAll("section.skill").forEach(section => {
+        const toggle = section.querySelector("input[type=checkbox]");
+
+        // Initial render
+        if (toggle) {
+            updateBars(section, toggle.checked);
+
+            // Listen for changes
+            toggle.addEventListener("change", function () {
+                updateBars(section, this.checked);
+            });
+        } else {
+            // If section has no toggle, default to percentages
+            updateBars(section, false);
+        }
+    });
+
+});
+
